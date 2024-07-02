@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Models\LoginActivity;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Providers\RouteServiceProvider;
+use App\Http\Requests\Auth\LoginRequest;
+
+class AuthenticatedSessionController extends Controller
+{
+    /**
+     * Display the login view.
+     */
+    public function create(): View
+    {
+        return view('auth.login');
+    }
+
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $request->session()->regenerate();
+        $userEmail = $request->email; // Replace with actual user email
+        $userIP = $request->ip();
+
+        LoginActivity::create([
+            'user_email' => $userEmail,
+            'ip_address' => $userIP,
+        ]);
+
+        return redirect()->intended(route('dashboard'))->with('success', 'You are successfully logged in');
+    }
+
+    /**
+     * Destroy an authenticated session.
+     */
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login')->with('success', 'You are logged out');
+    }
+}
