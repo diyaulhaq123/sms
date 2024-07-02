@@ -82,7 +82,7 @@ $school = app(App\Http\Controllers\SchoolController::class)->getSchool();
                           <!-- Logo -->
                           <div class="app-brand justify-content-center mb-4 mt-2">
                             <a href="javascript:void(0)" class="app-brand-link gap-2">
-                                <img src="{{ asset($school->logo) }}" class="rounded-circle logo" width="80" height="90" alt="">
+                                <img src="{{ asset('dashboard/img/grad.jpg') }}" class="rounded-circle logo" width="80" height="90" alt="">
                               <span class="app-brand-text demo text-body fw-bold ms-1">School Management System</span>
                             </a>
                           </div>
