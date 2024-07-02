@@ -1,6 +1,3 @@
-@php
-$school = app(App\Http\Controllers\SchoolController::class)->getSchool();
-@endphp
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed layout-compact " dir="ltr" data-theme="theme-default" data-assets-path="assets/dashboard/" data-template="horizontal-menu-template">
