@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,11 @@ class Fee extends Model
     protected $fillable = [
         'payment_type_id', 'class_id', 'session_id', 'term_id', 'amount', 'class_category_id'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
 
     /**
      * Get the user associated with the Fee

@@ -4,12 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
@@ -56,6 +58,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+    * @param Builder $builder
+    * @return void
+    */
+    public function scopeBySchool(Builder $builder): void
+    {
+        $builder->where('school_id', auth()->user()->school_id);
+    }
 
     /**
      * Get the user associated with the User

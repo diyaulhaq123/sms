@@ -122,14 +122,16 @@
               <div >Routes</div>
             </a>
           </li>
+          @role('admin|accountant')
           <li class="menu-item">
             <a href="{{ route('vehicle.allocation') }}" class="menu-link" >
               <div >Allocate Bus</div>
             </a>
           </li>
+          @endrole
           <li class="menu-item">
             <a href="{{ route('pay.transport.index') }}" class="menu-link" >
-              <div >Pay Student Transportaion</div>
+              <div >Pay Transport Fee</div>
             </a>
           </li>
         </ul>
@@ -146,6 +148,33 @@
           <div data-i18n="Calendar">Calendar</div>
         </a>
       </li>
+
+    @role('admin|teacher|eo')
+    <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-book"></i>
+          <div >Learning Activities</div>
+        </a>
+        <ul class="menu-sub">
+            @can('teacher_lesson_plan')
+            <li class="menu-item">
+                <a href="{{route('lesson_plan.index')}}" class="menu-link">
+                  <div>My Lesson Plan</div>
+                </a>
+            </li>
+            @endcan
+            @can('view_all_lesson_plan')
+            <li class="menu-item">
+                <a href="{{ route('admin.lesson_plans') }}" class="menu-link">
+                  <div>View Lesson Plans</div>
+                </a>
+            </li>
+            @endcan
+        </ul>
+    </li>
+    @endrole
+
+
     @role('admin')
       <!-- Academy menu start -->
       <li class="menu-item">
@@ -405,7 +434,7 @@
 
 
       {{-- ************************** STAFFS STATRS ******************* --}}
-        @role('admin')
+        @role('admin|principal')
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons ti ti-users"></i>

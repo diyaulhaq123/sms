@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\StaffFormat;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -10,6 +12,7 @@ class Profile extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'file_number',
         'first_name',
         'last_name',
         'other_name',
@@ -27,4 +30,19 @@ class Profile extends Model
         'avatar'
 
     ];
+
+
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new SchoolScope);
+    // }
+
+    public function formNumberUpdate(){
+        $number_format = StaffFormat::where('status', 1)->first();
+        $row = Self::latest('id')->first();
+        $string = $number_format->file_number ;
+        $array = explode(",", $string);
+        $lastElement = end($array);
+    }
+
 }

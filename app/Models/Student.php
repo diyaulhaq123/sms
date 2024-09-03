@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -25,6 +26,13 @@ class Student extends Model
         'user_id',
 
     ];
+
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
+
 
     /**
          * Get the user associated with the Student

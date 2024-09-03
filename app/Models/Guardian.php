@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Guardian extends Model
 {
@@ -11,4 +12,10 @@ class Guardian extends Model
     protected $fillable = [
         'first_name','other_names','email','phone','marital_status','address',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
+
 }

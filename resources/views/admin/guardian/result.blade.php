@@ -31,7 +31,6 @@ Result
                         @forelse ($results as $row)
                         <form action="{{ route('result.slip') }}" method="get">
                             @method('get')
-                            @csrf
                             <input type="hidden" name="class_id" value="{{ $row->class_id }}">
                             <input type="hidden" name="session_id" value="{{ $row->session_id }}">
                             {{-- <input type="hidden" name="term_id" value="{{ $row->term_id }}"> --}}

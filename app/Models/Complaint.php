@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,6 +14,13 @@ class Complaint extends Model
     protected $fillable = [
         'subject','message','user_id', 'student_id', 'status', 'notify'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
+
+
     /**
      * Get all of the guardian for the Complaint
      *

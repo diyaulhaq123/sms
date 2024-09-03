@@ -13,12 +13,12 @@ Add Grades
         <div class="card bg-success text-white mb-3">
             <div class="card-header">
                 {{$row->term->name}} - {{$row->session->name}}
-                <a href="{{ route('grading.index',['class_id'=> $row->class_id, 'subject_id'=>$row->subject_id]) }}" class="btn btn-primary" style="float: right">Grade <i class="ti ti-plus"></i></a>
+                <a href="{{ route('grading.index',['class_id'=> $row->class_id, 'subject_id'=>$row->subject_id, 'wing' => $row->wing]) }}" class="btn btn-primary" style="float: right">Grade <i class="ti ti-plus"></i></a>
             </div>
             <div class="card-body">
               <h5 class="card-title text-white">You where assigned to teach: <strong>{{$row->subject->name}}</strong></h5>
               <div class="card-text">Term: {{$row->term->name}}</div>
-              <div class="card-text">Class: {{$row->class->name}}</div>
+              <div class="card-text">Class: {{$row->class->name}} {{$row->wing}} </div>
             </div>
         </div>
     </div>

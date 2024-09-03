@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ScratchCard extends Model
 {
@@ -15,6 +16,12 @@ class ScratchCard extends Model
         'trial',
         'transaction_id',
     ];
+
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
 
 
     public function guardian(){

@@ -4,6 +4,7 @@
 </div>
 <input type="hidden" name="student_id" id="student_id" value="{{ $grade->student->id }}">
 <input type="hidden" name="admission_no" id="admission_no" value="{{ $grade->student->admission_no }}">
+<input type="hidden" name="wing" id="wing" value="{{ $grade->student->wing }}">
 
 <input type="hidden" name="id" id="id" value="{{ $grade->id }}">
 <input type="hidden" name="subject_id" id="subject_id" value="{{ $grade->subject_id }}">

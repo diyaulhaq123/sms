@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,11 @@ class StudentRouteAllocation extends Model
     protected $fillable = [
         'student_id', 'route_id', 'term_id', 'session_id', 'status'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
 
     /**
      * Get the route associated with the StudentRouteAllocation

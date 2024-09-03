@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,6 +13,11 @@ class Payment extends Model
     protected $fillable = [
         'student_id', 'session_id', 'term_id', 'payment_type_id','response', 'guardian_id', 'amount', 'class_id', 'ref_no', 'paid'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
 
     /**
      * Get all of the payment_type_id for the Payment

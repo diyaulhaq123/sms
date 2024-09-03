@@ -455,10 +455,10 @@ Dashboard
                     <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                         <div class="me-2">
                         <h6 class="mb-0">{{ $row->payment_type->name ?? 'NA' }}</h6>
-                        <small class="text-dark d-block mb-1">{{ $row->payment_status }}</small>
+                        <small class="text-dark d-block mb-1">{{ $row->payment_status ?? ''}}</small>
                         </div>
                         <div class="d-flex align-items-center gap-1">
-                            <h6 class="mb-0 ">{{ $row->student->admission_no }}</h6>
+                            <h6 class="mb-0 ">{{ $row->student->admission_no ?? ''}}</h6>
                         </div>
                         <div class="d-flex align-items-center gap-1">
                         <h6 class="mb-0 ">{{ number_format($row->paid, 2) }}</h6>

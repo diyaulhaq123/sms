@@ -29,7 +29,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        $userEmail = $request->email; // Replace with actual user email
+        $userEmail = $request->email; // Authenticate users email
         $userIP = $request->ip();
 
         LoginActivity::create([

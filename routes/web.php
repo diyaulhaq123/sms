@@ -51,16 +51,28 @@ Route::middleware('auth')->group(function () {
 
         //   ***********   Routes for only admin, eo & teachers access    ***********
         Route::middleware('role:admin,teacher,eo')->group(function () {
+
+
             Route::get('/allocated/subject', 'subjectAllocations')->name('allocated.subject');
             Route::get('/subject/grading', 'subjectGrading')->name('subject.grading');
-            Route::get('/gradings/{class_id}/{subject_id}', 'addGrades')->name('grading.index');
+            Route::get('/gradings/{class_id}/{subject_id}/{wing}', 'addGrades')->name('grading.index');
             Route::post('/create/grade', 'createGrade')->name('create.grade');
             Route::patch('update/grade', 'editGrade')->name('update.grade');
+
             Route::get('/allocation/class','viewClassAllocation')->name('index.class.allocation');
+
+
             Route::get('student-performance/{class_id}/{wing}', 'viewPerformance')->name('index.performance');
             Route::post('create/performance', 'createPerformance')->name('create.performance');
             Route::post('get-performance', 'viewEditPerformance')->name('get.performance');
             Route::patch('update/performance', 'editPerformance')->name('update.performance');
+
+
+            Route::get('lesson-plan', 'lessonPlan')->name('lesson_plan.index');
+            Route::get('lesson-plan/{class_id}/{subject_id}/{wing}', 'lessonPlan')->name('lesson_plan.open');
+            Route::post('create/lesson-plan', 'createLessonPlan')->name('create.lesson_plan');
+            Route::post('/edit-lesson-plan', 'showLessonPlan');
+            Route::patch('update-lesson-plan', 'updateLessonPlan')->name('update.lesson_plan');
 
           });
         //   ***********   Routes for only admin & teachers access ends   ***********
@@ -204,6 +216,12 @@ Route::middleware('auth')->group(function () {
 
           //  ***********   Routes for only admin & exam officers access    ***********
           Route::middleware('role:admin,eo')->group(function () {
+
+            // lesson plans admin section
+            Route::get('admin/lesson-plans', 'lessonPlans')->name('admin.lesson_plans');
+            Route::get('admin/lesson-plan/{id}', 'viewLessonPlan')->name('view.lesson_plan');
+            Route::patch('admin/update-lesson-plan', 'updateLessonPlan')->name('admin.update.lesson_plan');
+
             // Promotins and demotions
             Route::get('/promotions', 'promotion')->name('promotions');
             Route::get('/promotion/{class_id}', 'promotionView')->name('view.promotion');

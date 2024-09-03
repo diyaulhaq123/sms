@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ComplaintReply extends Model
 {
@@ -11,4 +12,11 @@ class ComplaintReply extends Model
     protected $table = 'complaint_replies';
 
     protected $fillable = ['guardian_id', 'message', 'subject' ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
+
+
 }

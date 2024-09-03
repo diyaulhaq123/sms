@@ -15,7 +15,7 @@ Allocations
           <div class="card-body">
             <h5 class="card-title text-white">You where assigned to teach: <strong>{{$row->subject->name}}</strong></h5>
             <div class="card-text">Term: {{$row->term->name}}</div>
-            <div class="card-text">Class: {{$row->class->name}}</div>
+            <div class="card-text">Class: {{$row->class->name}} {{ $row->wing }} </div>
           </div>
         </div>
     </div>

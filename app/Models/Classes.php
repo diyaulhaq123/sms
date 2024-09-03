@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Classes extends Model
 {
@@ -14,4 +15,9 @@ class Classes extends Model
         'name',
         'class_category_id'
     ];
+
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new SchoolScope);
+    // }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Result extends Model
 {
@@ -11,6 +12,11 @@ class Result extends Model
     protected $fillable = [
         'session_id', 'term_id', 'class_id', 'status'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
 
     public function class()
     {

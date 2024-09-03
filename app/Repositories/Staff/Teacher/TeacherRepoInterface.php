@@ -2,10 +2,10 @@
 namespace App\Repositories\Staff\Teacher;
 
 
-use App\Models\Performance;
+use App\Models\Term;
 use App\Models\Session;
 use App\Models\Subject;
-use App\Models\Term;
+use App\Models\Performance;
 
 interface TeacherRepoInterface{
 
@@ -31,8 +31,8 @@ interface TeacherRepoInterface{
      */
     public function getSubjectAllocationBySessionTerm($staff_id);
 
-    public function getAllocatedStudents($class_id);
-    public function checkAllocation($staff_id,$class_id,$subject_id);
+    public function getAllocatedStudents($class_id, $wing);
+    public function checkAllocation($staff_id,$class_id,$subject_id,$wing);
     public function confirmStudentsGrade($class_id,$student_id);
 
 
@@ -115,4 +115,59 @@ interface TeacherRepoInterface{
      * @return grades by id
      */
     public function findGrade($id);
+
+
+
+    public function getTeachers();
+
+
+    /**
+     * returns all lesson plan
+     *
+     * @return void
+     */
+    public function getLessonPlans();
+
+    /**
+     * creates new lesson plan
+     *
+     * @param array $data
+     * @return void
+     */
+    public function createLessonPlan(array $data);
+
+    /**
+     * updates lesson plan based on id
+     *
+     * @param integer $id
+     * @param array $data
+     * @return void
+     */
+    public function updateLessonPlan(int $id, array $data);
+
+    /**
+     * return a single lesson plan based on its id
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function findLessonPlan(int $id);
+
+    /**
+     * deletes lesson plan based on id
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function deleteLessonPlan(int $id);
+
+    /**
+     * returns lesson plan based on staff id
+     *
+     * @param integer $staff_id
+     * @return void
+     */
+    public function getLessonPlanByStaff(int $staff_id);
+
+
 }

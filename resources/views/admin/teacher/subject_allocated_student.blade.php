@@ -78,6 +78,7 @@ Grade students
             @csrf
                 <div class="row">
                     <div class="" id="student"></div>
+                    <input type="hidden" name="wing" id="wing" value="{{ $wing }}">
                     <input type="hidden" name="subject_id" id="subject_id" value="{{ $subject_id }}">
                     <input type="hidden" name="class_id" id="class_id" value="{{ $class_id }}">
                     <input type="hidden" name="staff_id" id="staff_id" value="{{ auth()->user()->id }}">

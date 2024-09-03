@@ -253,7 +253,7 @@ Profile
                         </div>
                         <div class="col-lg-4 col-sm-12 my-2">
                             <label for="">Phone Number</label>
-                            <input type="text" class="form-control" name="phone_number" id="town" placeholder="phone_number"
+                            <input type="text" class="form-control" name="phone number" id="town" placeholder="phone_number"
                             value="{{ $staff ? $staff->phone_number : '' }}" >
                             @error('phone_number')
                             <span class="text-danger" style="font-size:12px">{{ $message }}</span>

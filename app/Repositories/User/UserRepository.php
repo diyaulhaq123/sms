@@ -2,6 +2,7 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
+// use App\Models\Scopes\SchoolScope;
 use App\Repositories\User\UserRepoInterface;
 
 
@@ -14,20 +15,42 @@ Class  UserRepository implements UserRepoInterface
     }
 
 
+    /**
+     * returns all users
+     *
+     * @return void
+     */
     public function getUsers(){
-        return $this->user->get();
+        return User::bySchool()->get();
     }
 
-    public function getUserById($id){
-        return $this->user->find($id);
+    /**
+     * returns a user based on id
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function getUserById(int $id){
+        return User::bySchool()->find($id);
     }
 
+    /**
+     * creats new row in users table
+     *
+     * @param array $data
+     * @return void
+     */
     public function add(array $data){
-        return $this->user->create($data);
+        return User::bySchool()->create($data);
     }
 
+    /**
+     * returns users that are guardians
+     *
+     * @return void
+     */
     public function getGuardians(){
-        return $this->user->where('type', 'guardian')->get();
+        return User::bySchool()->where('type', 'guardian')->get();
     }
 
 }

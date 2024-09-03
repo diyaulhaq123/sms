@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SubjectAllocation extends Model
 {
@@ -15,8 +17,24 @@ class SubjectAllocation extends Model
         'staff_id',
         'subject_id',
         'class_id',
+        'wing',
         'class_category_id'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
+
+        /**
+         * Get the wing associated with the SubjectAllocation
+         *
+         * @return \Illuminate\Database\Eloquent\Relations\HasOne
+         */
+        public function wing(): HasOne
+        {
+            return $this->hasOne(Wing::class, 'name', 'wing');
+        }
         /*
          * Get the user associated with the Subject_allocation
          *

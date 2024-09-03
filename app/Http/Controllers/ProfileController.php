@@ -86,8 +86,8 @@ class ProfileController extends Controller
     public function createUpdateProfile(CreateProfileRequest $request, $id = null)
     {
         try {
-            if (auth()->user()->profile()) {
-                $profile = Profile::findOrFail(auth()->user()->id);
+            if (auth()->user()->profile) {
+                $profile = Profile::where('user_id',auth()->user()->id)->first();
                 $profile->update($request->validated());
             } else {
                 $profile = Profile::create($request->validated());
@@ -96,7 +96,7 @@ class ProfileController extends Controller
             return redirect()->back()->with('success', 'Profile saved successfully');
         } catch (\Exception $e) {
             Log::error($e->getMessage() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine());
-            return redirect()->back()->with('error', 'Error processing the request'.$e->getMessage());
+            return redirect()->back()->with('error', 'Error processing the request'.$e->getMessage() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine());
         }
     }
 

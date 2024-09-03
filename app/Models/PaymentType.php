@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PaymentType extends Model
 {
@@ -12,6 +13,12 @@ class PaymentType extends Model
         'name',
         'status'
     ];
+
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
 
 
 }

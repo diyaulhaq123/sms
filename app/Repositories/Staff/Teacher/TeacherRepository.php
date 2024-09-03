@@ -8,6 +8,7 @@ use App\Models\Session;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\GradeBook;
+use App\Models\LessonPlan;
 use App\Models\ClassAllocation;
 use App\Models\SubjectAllocation;
 use App\Models\StudentPerformance;
@@ -56,7 +57,10 @@ Class TeacherRepository implements TeacherRepoInterface{
 
     public function getSubjectAllocationBySession($staff_id){
         $session = $this->currentSession();
-        return SubjectAllocation::with('class','subject','term','session','user')->where('staff_id', $staff_id)->where('session_id', $session->id)->get();
+        return SubjectAllocation::with('class','subject','term','session','user','wing')
+            ->where('staff_id', $staff_id)
+            ->where('session_id', $session->id)
+            ->get();
     }
 
     /**
@@ -65,24 +69,28 @@ Class TeacherRepository implements TeacherRepoInterface{
     public function getSubjectAllocationBySessionTerm($staff_id){
         $session = $this->currentSession();
         $term = $this->currentTerm();
-        return SubjectAllocation::with('class','subject','term','session','user')->where('staff_id', $staff_id)
+        return SubjectAllocation::with('class','subject','term','session','user','wing')->where('staff_id', $staff_id)
         ->where('session_id', $session->id)
-        ->where('term_id', $term->id)->get();
+        ->where('term_id', $term->id)
+        ->get();
     }
 
-    public function getAllocatedStudents($class_id){
+    public function getAllocatedStudents($class_id, $wing){
         return Student::where('class_id',$class_id)
-        // ->where('wing', $wing)
+        ->where('wing', $wing)
         ->get();
     }
 
 
-    public function checkAllocation($staff_id,$class_id,$subject_id){
+    public function checkAllocation($staff_id,$class_id,$subject_id,$wing){
         $session = $this->currentSession();
         $term = $this->currentTerm();
-        return SubjectAllocation::with('class','subject','term','session','user')->where('staff_id', $staff_id)
-        ->where('session_id', $session->id)->where('subject_id',$subject_id)
-        ->where('term_id', $term->id)->where('class_id',$class_id)->first();
+        return SubjectAllocation::with('class','subject','term','session','user','wing')
+            ->where('staff_id', $staff_id)
+            ->where('wing', $wing)
+            ->where('session_id', $session->id)->where('subject_id',$subject_id)
+            ->where('term_id', $term->id)->where('class_id',$class_id)
+            ->first();
     }
 
     public function confirmStudentsGrade($class_id,$student_id){
@@ -240,9 +248,70 @@ Class TeacherRepository implements TeacherRepoInterface{
 
 
     public function getTeachers(){
-        return User::with('staff')->where('type', 'teacher')->get();
+        return User::with('staff')->schoolScope()->where('type', 'teacher')->get();
     }
 
+
+    /**
+     * returns all lesson plan
+     *
+     * @return void
+     */
+    public function getLessonPlans(){
+        return LessonPlan::with('staff','subject','class','profile')->get();
+    }
+
+    /**
+     * creates new lesson plan
+     *
+     * @param array $data
+     * @return void
+     */
+    public function createLessonPlan(array $data){
+        return LessonPlan::create($data);
+    }
+
+    /**
+     * updates lesson plan based on id
+     *
+     * @param integer $id
+     * @param array $data
+     * @return void
+     */
+    public function updateLessonPlan(int $id, array $data){
+        return LessonPlan::where('id', $id)->update($data);
+    }
+
+    /**
+     * return a single lesson plan based on its id
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function findLessonPlan(int $id){
+        return LessonPlan::with('staff','subject','class','profile')->where('id', $id)->first();
+    }
+
+    /**
+     * deletes lesson plan based on id
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function deleteLessonPlan(int $id){
+        return LessonPlan::where('id', $id)->delete();
+    }
+
+    /**
+     * returns lesson plan based on staff id
+     *
+     * @param integer $staff_id
+     * @return void
+     */
+    public function getLessonPlanByStaff(int $staff_id){
+        return LessonPlan::with('session','class','term','subject')
+            ->where('staff_id', $staff_id)->get();
+    }
 
 
 

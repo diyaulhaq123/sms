@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,10 +16,17 @@ class GradeBook extends Model
         'session_id',
         'student_id',
         'class_id',
+        'wing',
         'subject_id',
         'term_id',
         'ca1', 'ca2', 'ca3', 'exam'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
+
     /**
      * Get all of the comments for the Grade_book
      *
@@ -48,12 +56,12 @@ class GradeBook extends Model
         {
             return $this->hasOne(User::class, 'id', 'staff_id');
         }
-        
+
     public function staff()
     {
         return $this->hasOne(User::class, 'id', 'staff_id');
     }
-    
+
 
 
     public function term()

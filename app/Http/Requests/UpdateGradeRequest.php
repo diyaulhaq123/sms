@@ -32,6 +32,7 @@ class UpdateGradeRequest extends FormRequest
             'ca2' => 'required|max:20',
             'ca3' => 'required|max:20',
             'exam' => 'required|max:20',
+            'wing' => 'required',
 
         ];
     }

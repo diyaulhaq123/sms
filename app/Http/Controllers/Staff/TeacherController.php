@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateGradeRequest;
 use App\Http\Requests\UpdateGradeRequest;
+use App\Http\Requests\CreateLessonPlanRequest;
 use App\Http\Requests\CreatePerfomanceRequest;
 use App\Http\Requests\UpdatePerfomanceRequest;
 use App\Repositories\Staff\StaffRepoInterface;
@@ -70,11 +71,12 @@ class TeacherController extends Controller
     public function addGrades(Request $request){
         $subject_id = $request->subject_id;
         $class_id = $request->class_id;
+        $wing = $request->wing;
         $term = $this->teacherRepo->currentTerm();
         $session = $this->teacherRepo->currentSession();
-        $allocations = $this->teacherRepo->checkAllocation(auth()->user()->id,$request->class_id,$request->subject_id);
-        $students = $this->teacherRepo->getAllocatedStudents($request->class_id);
-        return view('admin.teacher.subject_allocated_student',compact('students','allocations','subject_id','class_id',
+        $allocations = $this->teacherRepo->checkAllocation(auth()->user()->id,$request->class_id,$request->subject_id,$request->wing);
+        $students = $this->teacherRepo->getAllocatedStudents($request->class_id, $request->wing);
+        return view('admin.teacher.subject_allocated_student',compact('wing','students','allocations','subject_id','class_id',
         'term','session'));
     }
 
@@ -94,7 +96,7 @@ class TeacherController extends Controller
                 return redirect()->back()->with('error', 'This Grading already exists');
             }
             DB::rollback();
-            return redirect()->back()->with('error', 'Could not add grade');
+            return redirect()->back()->with('error', 'Could not add grade'.$e->getMessage());
             Log::error($e->getMessage());
         }
     }
@@ -153,8 +155,8 @@ class TeacherController extends Controller
                 return redirect()->back()->with('error', 'This performance record already exists');
             }
             DB::rollback();
-            return redirect()->back()->with('error', 'Could not add student performance:'.$e->getMessage());
-            Log::error($e->getMessage());
+            return redirect()->back()->with('error', 'Could not add student performance');
+            Log::error($e->getMessage(). ' file: ' . $e->getFile() . ' line: ' .$e->getLine());
         }
     }
 
@@ -187,7 +189,7 @@ class TeacherController extends Controller
         $wing = $request->wing;
         // $ = $this->teacherRepo->getClassAllocatedStudents(auth()->user()->id);
         $allocation = $this->teacherRepo->checkClassAllocation(auth()->user()->id,$request->class_id,$wing);
-        $students = $this->teacherRepo->getAllocatedStudents($request->class_id);
+        $students = $this->teacherRepo->getAllocatedStudents($request->class_id, $request->wing);
         return view('admin.teacher.performance',compact('wing','class_id','term','session','students','allocation'));
     }
 
@@ -262,6 +264,54 @@ class TeacherController extends Controller
     public function deleteAttendance(Request $request)
     {
 
+    }
+
+    public function lessonPlan(Request $request){
+        $current_session = $this->teacherRepo->currentSession();
+        $subject_allocations = $this->teacherRepo->getSubjectAllocationBySessionTerm(auth()->user()->id);
+        if($request->class_id){
+            $allocations = $this->teacherRepo->checkAllocation(auth()->user()->id,$request->class_id,$request->subject_id,$request->wing);
+        }else{
+            $allocations = [];
+        }
+        $lesson_plan = $this->teacherRepo->getLessonPlanByStaff(auth()->user()->id);
+        return view('admin.teacher.lesson_plan',compact('lesson_plan','allocations','subject_allocations','current_session'));
+    }
+
+    public function createLessonPlan(CreateLessonPlanRequest $request){
+        $data = $request->validated();
+        try{
+            DB::beginTransaction();
+            $this->teacherRepo->createLessonPlan($data);
+            DB::commit();
+            return redirect()->back()->with('success', 'Lesson Plan was create');
+        }catch(\Exception $e){
+            if($e->getCode() === '23000'){
+                return redirect()->back()->with('error', 'Duplicate error');
+            }
+            DB::rollback();
+            return redirect()->back()->with('error', 'Could not add lesson plan');
+            Log::error($e->getMessage(). ' file: ' . $e->getFile() . ' line: ' .$e->getLine());
+        }
+    }
+
+    public function showLessonPlan(Request $request){
+        $lesson_plan = $this->teacherRepo->findLessonPlan($request->id);
+        return view('admin.teacher.edit_lesson_plan', compact('lesson_plan'));
+    }
+
+    public function updateLessonPlan(CreateLessonPlanRequest $request){
+        $data = $request->validated();
+        try{
+            DB::beginTransaction();
+            $this->teacherRepo->updateLessonPlan($request->id,$data);
+            DB::commit();
+            return redirect()->back()->with('success', 'Updated successfully');
+        }catch(\Exception $e){
+            DB::rollback();
+            return redirect()->back()->with('error', 'Could not update lesson plan');
+            Log::error($e->getMessage(). ' file: ' . $e->getFile() . ' line: ' .$e->getLine());
+        }
     }
 
 

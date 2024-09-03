@@ -76,11 +76,11 @@ Class AcademicsRepository implements AcademicsRepoInterface
     }
 
     public function getSubjectAllocation(){
-        return SubjectAllocation::with('staff','session','term','class','subject','user')->get();
+        return SubjectAllocation::with('staff','session','term','class','subject','user','wing')->get();
     }
 
     public function findSubjectAllocation($id){
-        return SubjectAllocation::with('staff','session','term','class','subject','user')->findOrFail($id);
+        return SubjectAllocation::with('staff','session','term','class','subject','user','wing')->findOrFail($id);
     }
 
 
@@ -133,11 +133,19 @@ Class AcademicsRepository implements AcademicsRepoInterface
     }
 
     public function getActiveSession(){
-        return Session::where('status', 1)->first();
+        $result = Session::where('status', 1)->first();
+        if($result){
+            return $result;
+        }
+            return false;
     }
 
     public function getActiveTerm(){
-        return Term::where('status', 1)->first();
+        $result = Term::where('status', 1)->first();
+        if($result){
+            return $result;
+        }
+            return false;
     }
 
 

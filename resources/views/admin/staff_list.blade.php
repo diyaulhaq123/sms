@@ -6,28 +6,6 @@ Staff
 Staff List
 @endsection
 @section('body')
-<form action="#" method="post">
-    @csrf
-    <div class="row align-items-end">
-
-            @csrf
-            <div class="col-lg-6 col-sm-12">
-                <label for="">Type</label>
-                <select type="text" class="form-control select2" name="type">
-                    <option value="">- Select -</option>
-                </select>
-                @error('type')
-                <span class="text-danger" style="font-size:13px">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="col-3 col-sm-6">
-                <button class="btn btn-success">filter</button>
-            </div>
-    </div>
-
-</form>
-@endsection
-@section('second-card')
 
 <div class="card">
     <h5 class="card-header">List</h5>
@@ -66,5 +44,8 @@ Staff List
       </table>
     </div>
 </div>
+
+
+
 
 @endsection

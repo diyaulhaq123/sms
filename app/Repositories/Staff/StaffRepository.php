@@ -30,20 +30,20 @@ Class StaffRepository implements StaffRepoInterface
     }
 
     public function getStaffs(){
-        return $this->user->with('staff')->whereIn('type', ['teacher', 'accountant', 'eo'])->get();
+        return User::with('staff')->bySchool()->whereIn('type', ['teacher', 'accountant', 'eo'])->get();
     }
 
 
     public function getAll(){
-        return $this->staff->get();
+        return User::scopeBySchool()->get();
     }
 
     public function getById($id){
-        return $this->user->findOrFail($id);
+        return User::bySchool()->findOrFail($id);
     }
 
     public function getBytype($type){
-        return $this->user->where('type', $type)->get();
+        return User::bySchool()->where('type', $type)->get();
     }
 
     public function countStaff(){

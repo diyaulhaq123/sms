@@ -959,7 +959,7 @@ class AdminController extends Controller
             return Paystack::getAuthorizationUrl()->redirectNow();
         }catch(\Exception $e) {
             return Redirect::back()->withMessage(['error'=>'The paystack token has expired. Please refresh the page and try again.', 'type'=>'error']);
-        }        
+        }
     }
 
     /**
@@ -1452,7 +1452,6 @@ class AdminController extends Controller
 
     public function createStudents(Request $request)
     {
-        
         $data = $request->validate([
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
@@ -1481,7 +1480,6 @@ class AdminController extends Controller
 
     public function updateStudents(Request $request)
     {
-        
         $data = $request->validate([
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
@@ -1505,7 +1503,26 @@ class AdminController extends Controller
         }
     }
 
+    public function lessonPlans(Request $request){
+        $lesson_plans = $this->teacherRepo->getLessonPlans();
+        return view('admin.lesson_plans', compact('lesson_plans'));
+    }
 
+    public function viewLessonPlan(Request $request){
+        $lesson_plan = $this->teacherRepo->findLessonPlan($request->id);
+        return view('admin.view_lesson_plan', compact('lesson_plan'));
+    }
+
+    public function updateLessonPlan(Request $request){
+        $request->validate(['id' => 'required', 'remark' => 'required']);
+        try {
+            $this->teacherRepo->updateLessonPlan($request->id,['remark' => $request->remark]);
+                return redirect()->back()->with('success', 'Remark added');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage().' file: '. $e->getFile().' line: '.$e->getLine());
+            return redirect()->back()->with('danger', 'Error adding remark');
+        }
+    }
 
 
 }

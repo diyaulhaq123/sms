@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,12 @@ class BusAllocation extends Model
     protected $fillable = [
         'route_id', 'bus_id', 'status'
     ];
+
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
 
     /**
      * Get the bus associated with the BusAllocation
@@ -32,5 +39,5 @@ class BusAllocation extends Model
     {
         return $this->hasOne(TransportRoute::class, 'id', 'route_id');
     }
-    
+
 }

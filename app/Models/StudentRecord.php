@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StudentRecord extends Model
 {
     use HasFactory;
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
+
     public function guardian()
     {
         return $this->hasOne(Guardian::class, 'id', 'guardian_id');

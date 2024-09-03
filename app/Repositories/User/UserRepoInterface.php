@@ -7,7 +7,7 @@ namespace App\Repositories\User;
 
 
     public function getUsers();
-    public function getUserById($id);
+    public function getUserById(int $id);
     public function add(array $data);
 
     public function getGuardians();

@@ -2,12 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\SchoolScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Term extends Model
 {
     use HasFactory;
+
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new SchoolScope);
+    }
+
     public static function activateTerm($id)
     {
         // First, set the status of all rows to 0

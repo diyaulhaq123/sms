@@ -163,7 +163,7 @@ use App\Repositories\Admin\AdminRepoInterface;
     }
 
     public function assignRoleToUser($id, $role){
-        $user = User::find($id);
+        $user = User::bySchool()->find($id);
         return $user->assignRole($role);
     }
 
@@ -223,29 +223,29 @@ use App\Repositories\Admin\AdminRepoInterface;
             ->select('class_id', 'session_id')
             ->where('student_id', $student_id)
             ->get();
-        
+
         $student = Student::with('session', 'class')
             ->select('class_id', 'session_id')
             ->where('id', $student_id)
             ->first();
-    
+
         if ($student_rec->isEmpty() || empty($student)) {
             $student_rec = [];
             $student = null;
         }
-    
+
         // Extract the class relationship from each student record
         $student_rec_classes = $student_rec->map(function($record) {
             return $record->class;
         });
-    
+
         $result = collect([$student ? $student->class : null])
         ->filter() // Remove null values
         ->merge($student_rec_classes)
         ->all();
         return $result;
     }
-    
-    
+
+
 
 }

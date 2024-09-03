@@ -24,6 +24,7 @@ class CreateGradeRequest extends FormRequest
         return [
             'student_id' => 'required|integer',
             'class_id' => 'required|integer',
+            'wing' => 'required',
             'admission_no' => 'required',
             'subject_id' => 'required|integer',
             'term_id' => 'required|integer',
