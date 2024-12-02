@@ -24,11 +24,12 @@ Portal Settings
                         <thead>
                             @foreach ($settings as $row)
                             <tr>
-                                <th>
-                                    <a class="btn btn-info btn-sm" href="{{ route('portal_settings.edit', $row->id) }} " > <i class="ri-eye-line"></i> </a>
-                                </th>
                                 <input type="hidden" value="{{ $row->id }}" name="id" id="id">
-                                <th style="font-size:15px">{{ $row->name }}</th>
+                                <th style="font-size:15gpx">
+                                        <a class="text-dark" href="{{ route('portal_settings.edit', $row->id) }}" >
+                                        {{ $row->name }}
+                                    </a>
+                                </th>
                                 <th class="float-end">
                                     <div class="form-check form-switch mb-2" bis_skin_checked="1">
                                         <input class="form-check-input" type="checkbox" {{ $row->status == 1 ? 'checked' : '' }} role="switch" id="status-switch">
@@ -41,9 +42,6 @@ Portal Settings
                         </thead>
                     </table>
                 </div>
-                {{-- <div class="col-12">
-                    <button class="btn btn-primary" type="submit">Save <i class="ri-save-3-line"></i></button>
-                </div> --}}
             </div>
            </div>
         </div>
