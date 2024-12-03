@@ -10,6 +10,7 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico')}}">
     @include('layouts.head-css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 
 @section('body')
@@ -40,6 +41,7 @@
 
     <!-- JAVASCRIPT -->
     @include('layouts.vendor-scripts')
+
 </body>
 
 </html>

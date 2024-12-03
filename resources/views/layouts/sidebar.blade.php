@@ -60,6 +60,22 @@
                 </li> <!-- end student Menu -->
 
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarLayouts1a" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                        <i class="ri-user-add-line"></i> <span>Application</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarLayouts1a">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Application List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Admission List</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> <!-- end student Menu -->
+
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts2" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-shield-user-fill"></i> <span>Guardians/Parents</span>
                     </a>
@@ -184,7 +200,7 @@
                     <div class="collapse menu-dropdown" id="sidebarPages5">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">Portal Settings</a>
+                                <a href="{{ route('portal_settings.index') }}" class="nav-link">Portal Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">System Settings</a>
