@@ -4,6 +4,11 @@
 @endsection
 @section('content')
 
+@component('components.breadcrumb')
+@slot('li_1') Pages @endslot
+@slot('title') Dashboard  @endslot
+@endcomponent
+
 <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="card p-3">
