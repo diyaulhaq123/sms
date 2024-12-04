@@ -25,7 +25,7 @@ Portal Settings
                             @foreach ($settings as $row)
                             <tr>
                                 <input type="hidden" value="{{ $row->id }}" name="id" id="id">
-                                <th style="font-size:15gpx">
+                                <th style="font-size:15px">
                                         <a class="text-dark" href="{{ route('portal_settings.edit', $row->id) }}" >
                                         {{ $row->name }}
                                     </a>
