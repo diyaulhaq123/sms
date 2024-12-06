@@ -26,6 +26,57 @@
             toastr.success('{{ session()->get('success') }}', 'Success');
     </script>
 @endif
+
+    <script>
+        $('#state_id').change(function(){
+            var state_id = $(this).val();
+            if(state_id){
+                $.ajax({
+                    url: '/api/get-lgas/' + state_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data){
+                        $('#lga_id').empty();
+
+                        $('#lga_id').append('<option value="">Select LGA</option>');
+
+                        $.each(data, function(key, value){
+                            $('#lga_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#lga_id').empty();
+                $('#lga_id').append('<option value="">Select LGA</option>');
+            }
+        });
+
+        $('#class_category_id').change(function(){
+            var class_category_id = $(this).val();
+            if(class_category_id){
+                $.ajax({
+                    url: '/api/get-class/' + class_category_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data){
+                        $('#class_id').empty();
+
+                        $('#class_id').append('<option value="">Select Class</option>');
+
+                        $.each(data, function(key, value){
+                            $('#class_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#class_id').empty();
+                $('#class_id').append('<option value="">Select Class</option>');
+            }
+        });
+
+
+    </script>
+
 @yield('script')
 @yield('script-bottom')
 

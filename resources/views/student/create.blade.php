@@ -37,7 +37,7 @@ Students
                     <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
                         <div class="form-group">
                             <label for="">Last Name <i class="text-danger">*</i></label>
-                            <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('first_name') }}" placeholder="First name">
+                            <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" placeholder="First name">
                         </div>
                         @error('last_name')
                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -115,7 +115,7 @@ Students
                         @enderror
                     </div>
 
-                    <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+                    <div class="col-lg-6 col-md-6 col-sm-12 mb-4" id="session_div">
                         <div class="form-group">
                             <label for="">Select Session  <i class="text-danger">*</i></label>
                             <select class="form-select" name="session_id" id="session_id" >
@@ -130,10 +130,11 @@ Students
                         @enderror
                     </div>
 
-                    <div class="col-lg-6 col-md-6 col-sm-12 mb-4" id="admission_id">
+                    <div class="col-lg-6 col-md-6 col-sm-12 mb-4" id="admission_div">
                         <div class="form-group">
                             <label for="">Admission Number <i class="text-danger">*</i></label>
-                            <input type="text" class="form-control" name="admission_no" id="admission_no" value="{{ old('admission_no') }}" placeholder="Admission No">
+                            <input type="text" class="form-control" name="admission_no" id="admission_no" value="{{ old('admission_no') }}" placeholder="Enter Student Admission No">
+                            <input type="text" class="form-control text-muted" readonly name="admission_no" id="admission_no_generate" value="111111111" placeholder="Admission No">
                         </div>
                         @error('admission_no')
                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -168,7 +169,7 @@ Students
                     <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
                         <div class="form-group">
                             <label for="">Select Lga Of Origin</label>
-                            <select class="form-select" name="state_id" id="state_id" >
+                            <select class="form-select" name="lga_id" id="lga_id" >
                                 <option value="">Select Lga</option>
                                 @foreach ($lgas as $row)
                                 <option value="{{ $row->id }}" {{ $row->id == old('lga_id') ? 'selected' : '' }} > {{ $row->name }} </option>
@@ -199,9 +200,21 @@ Students
     <script src="{{ asset('build/js/app.js') }}"></script>
     {{-- <script src="{{ asset('build/assets/js/pages/select2.init.js') }}"></script> --}}
     <script>
-        document.getElementById('status-switch').addEventListener('change', function () {
-            const statusInput = document.getElementById('status');
-            statusInput.value = this.checked ? '1' : '0';
-        });
+        $(document).ready(function(){
+            $('#admission_no').hide();
+            $('#status-switch').on('change', function () {
+                const statusInput = $('#status');
+                statusInput.val(this.checked ? '1' : '0');
+                const status = statusInput.val();
+                if (status === '1') {
+                    $('#admission_no_generate').hide();
+                    $('#admission_no').show();
+                } else {
+                    $('#admission_no').hide();
+                    $('#admission_no_generate').show();
+                }
+            });
+        })
+
     </script>
 @endsection

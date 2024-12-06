@@ -1,43 +1,71 @@
 @extends('layouts.master')
 @section('title')
-Sessions
+Students
 @endsection
 @section('content')
 
 @component('components.breadcrumb')
 @slot('li_1') Pages @endslot
-@slot('title') Sessions  @endslot
+@slot('title') Student List  @endslot
 @endcomponent
 
 <div class="row">
 
     <div class="card p-4">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="form-group">
+                    <select name="guardian_id" id="guardian_id" class="form-select">
+                        <option value="">Select Guardian</option>
+                        @foreach ($guardians as $row)
+                        <option value="{{ $row->id }}"> {{ $row->name }} - {{ $row->email }} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="form-group">
+                    <select name="class_id" id="class_id" class="form-select">
+                        <option value="">Select Class</option>
+                        @foreach ($classes as $row)
+                        <option value="{{ $row->id }}"> {{ $row->name }} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="form-group">
+                    <select name="wing" id="wing" class="form-select">
+                        <option value="">Select Class</option>
+                        @foreach ($wings as $row)
+                        <option value="{{ $row->name }}"> {{ $row->name }} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card p-4">
         <div class="card-header">
-            <a class="btn btn-primary float-end" href="{{ route('sessions.create') }}" > <i class="ri-add-circle-line"></i> Add Session</a>
+            <a class="btn btn-primary float-end" href="{{ route('student.create') }}" > <i class="ri-add-circle-line"></i> Add Students</a>
         </div>
         <div class="card-body">
-            <div class="card-title fw-bold">Sessions</div>
+            {{-- <div class="card-title fw-bold">Students</div> --}}
            <div class="row justify-content-center">
-            <div class="col-10">
+            <div class="col-12">
                 <div class="table table-responsive">
-                    <table class="table">
+                    <table class="table" id="myTable">
                         <thead>
-                            @foreach ($sessions as $row)
                             <tr>
-                                <input type="hidden" value="{{ $row->id }}" name="id" id="id">
-                                <th style="font-size:15px">
-                                        <a class="text-dark" href="{{ route('sessions.edit', $row->id) }}" >
-                                        {{ $row->name }}
-                                    </a> {{ $row->status == 1 ? '- (Current)' : '' }}
-                                </th>
-                                <th class="float-end">
-                                    <div class="form-check form-switch mb-2" bis_skin_checked="1">
-                                        <input class="form-check-input" type="checkbox" {{ $row->status == 1 ? 'checked' : '' }} role="switch" id="status-switch">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                    </div>
-                                </th>
+                                <th>SN</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Other Name</th>
+                                <th>Class</th>
+                                <th>Wing</th>
+                                <th>Guardian</th>
+                                <th>Status</th>
                             </tr>
-                            @endforeach
                         </thead>
                     </table>
                 </div>
@@ -49,57 +77,80 @@ Sessions
 </div>
 
 @endsection
+
+
+@section('css')
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+@endsection
+
 @section('script')
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 
+    <!--datatable js-->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    <script src="{{ asset('build/assets/js/pages/datatables.init.js') }}"></script>
     <script>
-        document.getElementById('status-switch').addEventListener('change', function () {
-            const statusInput = document.getElementById('status');
-            statusInput.value = this.checked ? '1' : '0';
-        });
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     let table = new DataTable('#myTable',);
+        // });
 
         $(document).ready(function(){
-            $('.form-check-input').change(function () {
-                // Get the status of the checkbox that was toggled
-                const isChecked = $(this).is(':checked');
 
-                // Find the closest row and extract the ID
-                const row = $(this).closest('tr');
-                const id = row.find('input[name="id"]').val();
-                const token = '{{ csrf_token() }}';
-                const status = isChecked ? 1 : 0;
-
-                // If checked, uncheck all other checkboxes
-                if (isChecked) {
-                    $('.form-check-input').not(this).prop('checked', false); // Uncheck all except the current one
-                }
-
-                // Send the AJAX request
-                const url = `/toogle-session/${id}`;
-                $.ajax({
-                    url: url,
-                    method: 'PUT',
-                    data: {
-                        _token: token,
-                        id: id,
-                        status: status,
-                    },
-                    success: function (response) {
-                        // Handle success
-                        if (response.message === 'success') {
-                            toastr.success('Updated!', 'Success');
+            let table = $('#myTable').DataTable({
+                    ajax: {
+                        url: '/api/students',
+                        type: 'GET',
+                        data: function(d) {
+                            d.class_id = $('#class_id').val();
+                            d.wing = $('#wing').val();
+                            d.guardian_id = $('#guardian_id').val();
                         }
                     },
-                    error: function (xhr) {
-                        // Handle error
-                        toastr.error('An error occurred!', 'Error');
+                    processing: true,
+                    serverSide: true,
+                    searching : true,
+                    columns: [
+                        { data: 'id', name: 'id' },
+                        { data: 'first_name', name: 'first_name', searching: true  },
+                        { data: 'last_name', name: 'last_name', searching: true },
+                        { data: 'other_name', name: 'other_name', searching: true  },
+                        { data: 'class', name: 'class.name', searching: true  },
+                        { data: 'wing', name: 'wing', searching: true },
+                        { data: 'guardian', name: 'guardian', searching: true },
+                        { data: 'status', name: 'status', orderable: false, searching: false },
+                    ],
+                    rowCallback: function(row, data) {
+                        $(row).attr('onclick', `window.location='/student/${data.id}'`);
+                        $(row).css('cursor', 'pointer');
                     }
-                });
             });
+
+            $('#class_id, #wing, #guardian_id').on('change', function() {
+                table.ajax.reload();
+            });
+                // $('#download_report').on('click', function () {
+                //     $("#example").table2excel({
+                //         filename: "collection_reports.xls"
+                //     });
+                // });
 
         });
 
-    </script>
 
+    </script>
 @endsection

@@ -62,4 +62,17 @@ class GradeBookController extends Controller
     {
         //
     }
+
+
+    public function getStudentResult(Request $request){
+        $data = GradeBook::where([
+            'student_id' => $request->student_id,
+            'class_id' => $request->class_id,
+            'session_id' => $request->session_id,
+            'term_id' => $request->term_id,
+        ])->get();
+        return json_encode($data);
+    }
+
+
 }

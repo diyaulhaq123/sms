@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Payment;
-use App\Models\StudentRecord;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Student extends Model
+class StudentRecord extends Model
 {
     protected $guarded = [];
 
-    /**
+     /**
      * Get the guardian that owns the Student
      *
      * @return BelongsTo
@@ -54,14 +50,6 @@ class Student extends Model
     }
 
 
-
-    public function studentSessions($student_id){
-        $past = StudentRecord::where('student_id', $student_id)->count();
-        $present = Self::where('id', $student_id)->count();
-        return $past+$present;
-    }
-
-
     /**
      * Get the state that owns the Student
      *
@@ -85,12 +73,13 @@ class Student extends Model
     /**
      * Get the session that owns the StudentRecord
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function session(): BelongsTo
     {
         return $this->belongsTo(Session::class);
     }
+
 
     /**
      * Get the payment associated with the Student
