@@ -12,11 +12,9 @@ Portal Settings
 <div class="card p-4">
     <div class="card-body">
         <div class="col-lg-8 col-md-8 col-sm-12">
-            <form action="{{ route('portal_settings.update', $portalSetting->id) }}" method="post">
-                @csrf
-                @method('put')
                 <div class="row justify-content-between align-items-end">
-                    <input type="hidden" name="id" id="" value="{{ $portalSetting->id }}">
+                    <input type="hidden" name="id" id="id" value="{{ $portalSetting->id }}">
+
                     <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
                         <div class="form-group">
                             <label for="">Settings Name</label>
@@ -38,11 +36,10 @@ Portal Settings
                         @enderror
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-primary" type="submit">Save</button>
+                        <button class="btn btn-primary" type="button" id="save">Save</button>
                         <a href="{{ route('portal_settings.index') }}" class="btn btn-danger" >Back</a>
                     </div>
                 </div>
-            </form>
         </div>
     </div>
 </div>
@@ -56,5 +53,33 @@ Portal Settings
             const statusInput = document.getElementById('status');
             statusInput.value = this.checked ? '1' : '0';
         });
+        $(document).ready(function(){
+            $('#save').click(function(){
+                let token = '{{ csrf_token() }}';
+                let status = $('#status').val();
+                let name = $('#name').val();
+                let id = $('#id').val();
+                const url = `/portal_settings/${id}`;
+                $.ajax({
+                    url: url,
+                    method: 'PUT',
+                    data: {
+                        _token: token,
+                        id: id,
+                        status: status,
+                        name: name,
+                    },
+                    success: function (response) {
+                        if (response.message === 'success') {
+                            toastr.success('Settings updated!', 'Success');
+                        }
+                    },
+                    error: function (xhr) {
+                        toastr.error('An error occurred!', 'Error');
+                    }
+                });
+            });
+        });
     </script>
+
 @endsection

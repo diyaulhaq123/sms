@@ -1,6 +1,6 @@
 @extends('layouts.master-without-nav')
 @section('title')
-    @lang('translation.signup')
+    Register
 @endsection
 @section('content')
 
@@ -41,7 +41,6 @@
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
                                     <h5 class="text-primary">Create New Account</h5>
-                                    <p class="text-muted">Get your free velzon account now</p>
                                 </div>
                                 <div class="p-2 mt-4">
                                     <form class="needs-validation" novalidate method="POST"
@@ -63,11 +62,11 @@
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="username" class="form-label">Username <span
+                                            <label for="username" class="form-label">Name <span
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control @error('name') is-invalid @enderror"
                                                 name="name" value="{{ old('name') }}" id="username"
-                                                placeholder="Enter username" required>
+                                                placeholder="Enter Name" required>
                                             @error('name')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -149,7 +148,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <p class="mb-0 text-muted">&copy; <script>document.write(new Date().getFullYear())</script> Powered by <a href="hilinksnetworks.ng">Hilinks Networks</a></p>
+                            <p class="mb-0 text-muted">&copy; <script>document.write(new Date().getFullYear())</script> Powered by <a href="https://hilinksnetworks.ng">Hilinks Networks</a></p>
                         </div>
                     </div>
                 </div>

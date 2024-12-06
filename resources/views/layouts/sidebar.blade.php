@@ -205,6 +205,14 @@
                             <li class="nav-item">
                                 <a href="#" class="nav-link">System Settings</a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('sessions.index') }}" class="nav-link">Sessions</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('terms.index') }}" class="nav-link">Terms</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
