@@ -39,4 +39,14 @@ class Result extends Model
         return $this->belongsTo(Session::class);
     }
 
+    public static function toogleStatus($id)
+    {
+        $result = self::where('id', $id)->first();
+        if($result->status == 1){
+            $result->update(['status' => 0]);
+        }else{
+            $result->update(['status' => 1]);
+        }
+    }
+
 }

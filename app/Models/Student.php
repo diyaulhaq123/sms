@@ -112,4 +112,27 @@ class Student extends Model
         return $this->hasMany(Payment::class);
     }
 
+
+    public function totalPayments($student_id)
+    {
+        $total = Payment::where([
+            'student_id' => $student_id,
+            'response' => 'success',
+        ])->sum('amount');
+
+        return $total;
+    }
+
+
+    public function getAllData($student_id){
+        $past = StudentRecord::select('student_id','admission_no','session_id','class_id','guardian_id')
+            ->where('student_id', $student_id)->get()->toArray();
+        $present = Self::select('id as student_id','admission_no','session_id','class_id','guardian_id')
+            ->where('id', $student_id)
+            ->get()->toArray();
+        $data = array_merge($past,$present);
+        return $data;
+    }
+
+
 }

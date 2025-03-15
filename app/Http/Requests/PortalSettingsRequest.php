@@ -22,7 +22,7 @@ class PortalSettingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:portal_settings,name',
             'slug' => 'sometimes|string',
             'status' => 'required',
             'type' => 'sometimes'

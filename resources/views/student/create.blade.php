@@ -11,6 +11,7 @@ Students
 
 <div class="card p-4">
     <div class="card-header">
+        <a href="{{ route('student.index') }}" class="btn btn-primary"><i class="ri-arrow-left-circle-line"></i> Back to list</a>
         <div class="form-check form-switch mb-2 float-end" bis_skin_checked="1">
             <input class="form-check-input" type="checkbox" role="switch" id="status-switch">
             <label class="form-check-label" for="flexSwitchCheckDefault">Student have an admission number(Yes)</label>
@@ -37,7 +38,7 @@ Students
                     <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
                         <div class="form-group">
                             <label for="">Last Name <i class="text-danger">*</i></label>
-                            <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" placeholder="First name">
+                            <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" placeholder="Last name">
                         </div>
                         @error('last_name')
                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -54,7 +55,7 @@ Students
                         @enderror
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+                    <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
                         <div class="form-group">
                             <label for="">Select Guardian  <i class="text-danger">*</i></label>
                             <select class="select2 form-select" name="guardian_id" id="guardian_id" >
@@ -65,6 +66,20 @@ Students
                             </select>
                         </div>
                         @error('guardian_id')
+                        <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+                        <div class="form-group">
+                            <label for="">Select Gender  <i class="text-danger">*</i></label>
+                            <select class="select2 form-select" name="gender" id="gender" >
+                                <option value="">Select Guardian</option>
+                                <option value="male" {{ 'male' == old('gender') ? 'selected' : '' }} > Male </option>
+                                <option value="female" {{ 'female' == old('gender') ? 'selected' : '' }} > Female </option>
+                            </select>
+                        </div>
+                        @error('gender')
                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
                         @enderror
                     </div>
@@ -88,7 +103,7 @@ Students
                     <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
                         <div class="form-group">
                             <label for="">Select Class  <i class="text-danger">*</i></label>
-                            <select class="form-select" name="class_id" id="class_id" >
+                            <select class="form-select " name="class_id" id="class_id" >
                                 <option value="">Select Class</option>
                                 @foreach ($classes as $row)
                                 <option value="{{ $row->id }}" {{ $row->id == old('class_id') ? 'selected' : '' }} > {{ $row->name }} </option>
@@ -112,6 +127,19 @@ Students
                         </div>
                         @error('wing')
                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="col-lg-12 col-sm-12 mb-3" id="category" style="display:none" >
+                        <label for="">Category</label>
+                        <select name="category" id="category" class="form-select">
+                            <option value="">Select Category</option>
+                            @foreach ($category as $row)
+                            <option value="{{ $row->id }}" {{ old('category') == $row->id ? 'selected' : '' }}>{{ $row->name }} </option>
+                            @endforeach
+                        </select>
+                        @error('category')
+                        <span class="text-danger" style="font-size:12px">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -183,8 +211,8 @@ Students
 
 
                     <div class="col-12">
-                        <button class="btn btn-primary" type="submit">Save</button>
-                        <a href="{{ route('student.index') }}" class="btn btn-danger" >Back</a>
+                        <button class="btn btn-primary" type="submit"> <i class="ri-save-fill"></i>Save</button>
+                        <a href="{{ route('student.index') }}" class="btn btn-danger" > <i class="ri-arrow-left-circle-line"></i>Back</a>
                     </div>
                 </div>
             </form>
@@ -194,11 +222,12 @@ Students
 
 @endsection
 @section('script')
-<!--jquery cdn-->
-<!--select2 cdn-->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('build/js/app.js') }}"></script>
-    {{-- <script src="{{ asset('build/assets/js/pages/select2.init.js') }}"></script> --}}
+
+    <!--select2 cdn-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('build/js/pages/select2.init.js') }}"></script>
+
     <script>
         $(document).ready(function(){
             $('#admission_no').hide();
@@ -217,4 +246,17 @@ Students
         })
 
     </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#class_category_id').change(function(){
+                var category = $('#class_category_id').val();
+                if(category == 4){
+                    $('#category').show();
+                }
+            });
+        });
+
+    </script>
+
 @endsection

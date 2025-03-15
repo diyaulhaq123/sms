@@ -20,7 +20,7 @@ Student
         <div class="row g-4" bis_skin_checked="1">
             <div class="col-auto" bis_skin_checked="1">
                 <div class="avatar-lg" bis_skin_checked="1">
-                    <img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-thumbnail rounded-circle">
+                    <img src="{{ asset('build/images/avatar.jpeg') }}" alt="user-img" class="img-thumbnail rounded-circle">
                 </div>
             </div>
             <!--end col-->
@@ -66,18 +66,20 @@ Student
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link fs-14" data-bs-toggle="tab" href="#projects" role="tab" aria-selected="false" tabindex="-1">
-                                <i class="ri-price-tag-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Projects/Grades</span>
+                                <i class="ri-price-tag-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Results/Grades</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link fs-14" data-bs-toggle="tab" href="#documents" role="tab" aria-selected="false" tabindex="-1">
-                                <i class="ri-folder-4-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Documents</span>
+                                <i class="ri-folder-4-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Documents/Payments</span>
                             </a>
                         </li>
                     </ul>
+                    @can('edit-student')
                     <div class="flex-shrink-0" bis_skin_checked="1">
                         <a href="{{ route('student.edit', $student->id) }}" class="btn btn-success"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
                     </div>
+                    @endcan
                 </div>
                 <!-- Tab panes -->
                 <div class="tab-content pt-4 text-muted" bis_skin_checked="1">
@@ -265,7 +267,7 @@ Student
                             <div class="card-body" bis_skin_checked="1">
                                 <div class="row" bis_skin_checked="1">
                                     @foreach ($results as $result)
-                                    <div class="col-xxl-3 col-sm-6" bis_skin_checked="1">
+                                    <div class="col-lg-6 col-md-6 col-sm-6" bis_skin_checked="1">
                                         <div class="card profile-project-card shadow-none profile-project-success" bis_skin_checked="1">
                                             <div class="card-body p-4" bis_skin_checked="1">
                                                 <div class="d-flex" bis_skin_checked="1">
@@ -299,7 +301,7 @@ Student
 
                                     @if (!empty($result2))
                                     @foreach ($result2 as $result)
-                                    <div class="col-xxl-3 col-sm-6" bis_skin_checked="1">
+                                    <div class="col-lg-6 col-md-6 col-sm-6" bis_skin_checked="1">
                                         <div class="card profile-project-card shadow-none profile-project-success" bis_skin_checked="1">
                                             <div class="card-body p-4" bis_skin_checked="1">
                                                 <div class="d-flex" bis_skin_checked="1">
@@ -331,33 +333,6 @@ Student
                                     @endforeach
                                     @endif
 
-                                    <div class="col-lg-12" bis_skin_checked="1">
-                                        <div class="mt-4" bis_skin_checked="1">
-                                            <ul class="pagination pagination-separated justify-content-center mb-0">
-                                                <li class="page-item disabled">
-                                                    <a href="javascript:void(0);" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
-                                                </li>
-                                                <li class="page-item active">
-                                                    <a href="javascript:void(0);" class="page-link">1</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="javascript:void(0);" class="page-link">2</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="javascript:void(0);" class="page-link">3</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="javascript:void(0);" class="page-link">4</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="javascript:void(0);" class="page-link">5</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="javascript:void(0);" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                                 <!--end row-->
                             </div>
@@ -370,7 +345,7 @@ Student
                         <div class="card" bis_skin_checked="1">
                             <div class="card-body" bis_skin_checked="1">
                                 <div class="d-flex align-items-center mb-4" bis_skin_checked="1">
-                                    <h5 class="card-title flex-grow-1 mb-0">Documents</h5>
+                                    <h5 class="card-title flex-grow-1 mb-0">Documents & Payments</h5>
                                     <div class="flex-shrink-0" bis_skin_checked="1">
                                         <input class="form-control d-none" type="file" id="formFile">
                                         <label for="formFile" class="btn btn-danger"><i class="ri-upload-2-fill me-1 align-bottom"></i> Upload File</label>
@@ -384,203 +359,59 @@ Student
                                                     <tr>
                                                         <th scope="col">File Name</th>
                                                         <th scope="col">Type</th>
-                                                        <th scope="col">Size</th>
-                                                        <th scope="col">Upload Date</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Payment Status</th>
+                                                        <th scope="col">Session</th>
+                                                        <th scope="col">Term</th>
+                                                        <th scope="col">Transaction Date</th>
                                                         <th scope="col">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach ($payments as $row)
                                                     <tr>
                                                         <td>
                                                             <div class="d-flex align-items-center" bis_skin_checked="1">
-                                                                <div class="avatar-sm" bis_skin_checked="1">
-                                                                    <div class="avatar-title bg-primary-subtle text-primary rounded fs-20" bis_skin_checked="1">
-                                                                        <i class="ri-file-zip-fill"></i>
+                                                                {{-- <div class="avatar-sm" bis_skin_checked="1">
+                                                                    <div class="avatar-title {{ $row->response == 'success' ?  'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }} rounded fs-20" bis_skin_checked="1">
+                                                                        <i class="ri-cash-fill"></i>
                                                                     </div>
-                                                                </div>
+                                                                </div> --}}
                                                                 <div class="ms-3 flex-grow-1" bis_skin_checked="1">
-                                                                    <h6 class="fs-15 mb-0"><a href="javascript:void(0)">Artboard-documents.zip</a>
-                                                                    </h6>
+                                                                    <h6 class="fs-15 mb-0">{{ 'Payment' }}</h6>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>Zip File</td>
-                                                        <td>4.57 MB</td>
-                                                        <td>12 Dec 2021</td>
+                                                        <td>{{ $row->paymentType->name ?? '' }}</td>
+                                                        <td>{{ number_format($row->amount, 2) ?? '' }}</td>
+                                                        <td>{!! $row->response == 'success' ? '<span class="badge bg-success">Successful</span>' : '<span class="badge bg-danger">Not Paid</span>' !!}</td>
+                                                        <td>{{ $row->session->name }}</td>
+                                                        <td>{{ $row->term->name }}</td>
+                                                        <td>{{ $row->created_at ? $row->created_at->format('Y-m-d') : '' }}</td>
                                                         <td>
+                                                            @if($row->response == 'success')
                                                             <div class="dropdown" bis_skin_checked="1">
                                                                 <a href="javascript:void(0);" class="btn btn-light btn-icon" id="dropdownMenuLink15" data-bs-toggle="dropdown" aria-expanded="true">
                                                                     <i class="ri-equalizer-fill"></i>
                                                                 </a>
                                                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink15">
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-middle text-muted"></i>View</a></li>
+                                                                    <li><a class="dropdown-item" href="{{ $row->id }}"><i class="ri-eye-fill me-2 align-middle text-muted"></i>View</a></li>
                                                                     <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-middle text-muted"></i>Download</a></li>
-                                                                    <li class="dropdown-divider"></li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle text-muted"></i>Delete</a></li>
+                                                                    {{-- <li class="dropdown-divider"></li>
+                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle text-muted"></i>Delete</a></li> --}}
                                                                 </ul>
                                                             </div>
+                                                            @else
+                                                            <button class="btn btn-success btn-sm makePayment" type="button" style="font-size:"  id="makePayment" data-id="{{ $row->id }}" >Make Payment</button>
+                                                            @endif
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center" bis_skin_checked="1">
-                                                                <div class="avatar-sm" bis_skin_checked="1">
-                                                                    <div class="avatar-title bg-danger-subtle text-danger rounded fs-20" bis_skin_checked="1">
-                                                                        <i class="ri-file-pdf-fill"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ms-3 flex-grow-1" bis_skin_checked="1">
-                                                                    <h6 class="fs-15 mb-0"><a href="javascript:void(0);">Bank Management System</a></h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>PDF File</td>
-                                                        <td>8.89 MB</td>
-                                                        <td>24 Nov 2021</td>
-                                                        <td>
-                                                            <div class="dropdown" bis_skin_checked="1">
-                                                                <a href="javascript:void(0);" class="btn btn-light btn-icon" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                    <i class="ri-equalizer-fill"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink3">
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-middle text-muted"></i>View</a></li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-middle text-muted"></i>Download</a></li>
-                                                                    <li class="dropdown-divider"></li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle text-muted"></i>Delete</a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center" bis_skin_checked="1">
-                                                                <div class="avatar-sm" bis_skin_checked="1">
-                                                                    <div class="avatar-title bg-secondary-subtle text-secondary rounded fs-20" bis_skin_checked="1">
-                                                                        <i class="ri-video-line"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ms-3 flex-grow-1" bis_skin_checked="1">
-                                                                    <h6 class="fs-15 mb-0"><a href="javascript:void(0);">Tour-video.mp4</a></h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>MP4 File</td>
-                                                        <td>14.62 MB</td>
-                                                        <td>19 Nov 2021</td>
-                                                        <td>
-                                                            <div class="dropdown" bis_skin_checked="1">
-                                                                <a href="javascript:void(0);" class="btn btn-light btn-icon" id="dropdownMenuLink4" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                    <i class="ri-equalizer-fill"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink4">
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-middle text-muted"></i>View</a></li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-middle text-muted"></i>Download</a></li>
-                                                                    <li class="dropdown-divider"></li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle text-muted"></i>Delete</a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center" bis_skin_checked="1">
-                                                                <div class="avatar-sm" bis_skin_checked="1">
-                                                                    <div class="avatar-title bg-success-subtle text-success rounded fs-20" bis_skin_checked="1">
-                                                                        <i class="ri-file-excel-fill"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ms-3 flex-grow-1" bis_skin_checked="1">
-                                                                    <h6 class="fs-15 mb-0"><a href="javascript:void(0);">Account-statement.xsl</a></h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>XSL File</td>
-                                                        <td>2.38 KB</td>
-                                                        <td>14 Nov 2021</td>
-                                                        <td>
-                                                            <div class="dropdown" bis_skin_checked="1">
-                                                                <a href="javascript:void(0);" class="btn btn-light btn-icon" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                    <i class="ri-equalizer-fill"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink5">
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-middle text-muted"></i>View</a></li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-middle text-muted"></i>Download</a></li>
-                                                                    <li class="dropdown-divider"></li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle text-muted"></i>Delete</a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center" bis_skin_checked="1">
-                                                                <div class="avatar-sm" bis_skin_checked="1">
-                                                                    <div class="avatar-title bg-info-subtle text-info rounded fs-20" bis_skin_checked="1">
-                                                                        <i class="ri-folder-line"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ms-3 flex-grow-1" bis_skin_checked="1">
-                                                                    <h6 class="fs-15 mb-0"><a href="javascript:void(0);">Project Screenshots Collection</a></h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>Floder File</td>
-                                                        <td>87.24 MB</td>
-                                                        <td>08 Nov 2021</td>
-                                                        <td>
-                                                            <div class="dropdown" bis_skin_checked="1">
-                                                                <a href="javascript:void(0);" class="btn btn-light btn-icon" id="dropdownMenuLink6" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                    <i class="ri-equalizer-fill"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink6">
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-middle"></i>View</a></li>
-                                                                    <li>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-middle"></i>Download</a>
-                                                                    </li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle"></i>Delete</a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center" bis_skin_checked="1">
-                                                                <div class="avatar-sm" bis_skin_checked="1">
-                                                                    <div class="avatar-title bg-danger-subtle text-danger rounded fs-20" bis_skin_checked="1">
-                                                                        <i class="ri-image-2-fill"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ms-3 flex-grow-1" bis_skin_checked="1">
-                                                                    <h6 class="fs-15 mb-0">
-                                                                        <a href="javascript:void(0);">Velzon-logo.png</a>
-                                                                    </h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>PNG File</td>
-                                                        <td>879 KB</td>
-                                                        <td>02 Nov 2021</td>
-                                                        <td>
-                                                            <div class="dropdown" bis_skin_checked="1">
-                                                                <a href="javascript:void(0);" class="btn btn-light btn-icon" id="dropdownMenuLink7" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                    <i class="ri-equalizer-fill"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink7">
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-middle"></i>View</a></li>
-                                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-middle"></i>Download</a></li>
-                                                                    <li>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle"></i>Delete</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    @endforeach
+
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="text-center mt-3" bis_skin_checked="1">
-                                            <a href="javascript:void(0);" class="text-success"><i class="mdi mdi-loading mdi-spin fs-20 align-middle me-2"></i> Load more </a>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -608,5 +439,112 @@ Student
 @section('script')
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
+    <script type="text/javascript" src="https://sdk.monnify.com/plugin/monnify.js"></script>
+    <script>
+
+            // Monnify Payment Function
+            // function payWithMonnify(payment) {
+            //     MonnifySDK.initialize({
+            //         amount: payment.amount, // Amount from the AJAX response
+            //         currency: "NGN",
+            //         reference: payment.ref_no, // Generate unique reference
+            //         customerFullName: "{{ auth()->user()->name }}", // Pass from the AJAX response
+            //         customerEmail: "{{ auth()->user()->email }}", // Pass from the AJAX response
+            //         apiKey: "MK_TEST_LSB8PVX5N4",
+            //         contractCode: "8676269291",
+            //         paymentDescription: payment.payment_type_id, // Pass from the AJAX response
+            //         metadata: {
+            //             studentId: payment.student_id, // Pass from the AJAX response
+            //         },
+            //         onLoadStart: () => {
+            //             console.log("Loading started...");
+            //         },
+            //         onLoadComplete: () => {
+            //             console.log("SDK is ready.");
+            //         },
+            //         onComplete: function (response) {
+            //             // Handle transaction success
+            //             console.log("Transaction complete:", response);
+            //             if (response.paymentStatus === "PAID") {
+            //                 Swal.fire('Success', 'Payment completed successfully.', 'success');
+            //             } else {
+            //                 Swal.fire('Incomplete', 'Payment not completed.', 'warning');
+            //             }
+            //         },
+            //         onClose: function (data) {
+            //             // Handle modal close event
+            //             console.log("Payment modal closed:", data);
+            //         },
+            //     });
+            // }
+
+
+        $(document).ready(function(){
+            $('.makePayment').click(function () {
+    var id = $(this).data('id');
+
+    Swal.fire({
+        text: "Do you want to complete payment for this student?",
+        icon: "question",
+        title: "Make Payment Online",
+        showConfirmButton: true,
+        confirmButtonText: 'Pay',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Perform an AJAX request to fetch payment details
+            $.ajax({
+                url: `make-payment/${id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        // Ensure paymentDescription is a string
+                        var paymentDescription = data.payment.payment_type_id;
+                        if (typeof paymentDescription !== 'string') {
+                            paymentDescription = String(paymentDescription);
+                        }
+
+                        // Proceed with the payment
+                        MonnifySDK.initialize({
+                            amount: data.payment.amount,
+                            currency: "NGN",
+                            reference: data.payment.ref_no,
+                            customerFullName: "{{ auth()->user()->name }}",
+                            customerEmail: "{{ auth()->user()->email }}",
+                            apiKey: "MK_TEST_LSB8PVX5N4",
+                            contractCode: "8676269291",
+                            paymentDescription: paymentDescription,
+                            metadata: {
+                                studentId: data.payment.student_id,
+                            },
+                            onComplete: function (response) {
+                                if (response.paymentStatus === "PAID") {
+                                    Swal.fire('Success', 'Payment completed successfully.', 'success');
+                                } else {
+                                    Swal.fire('Incomplete', 'Payment not completed.', 'warning');
+                                }
+                            },
+                            onClose: function (data) {
+                                console.log("Payment modal closed:", data);
+                            },
+                        });
+                    } else {
+                        Swal.fire('Error', 'Unable to fetch payment details.', 'error');
+                    }
+                },
+                error: function () {
+                    Swal.fire('Error', 'Something went wrong while fetching payment details.', 'error');
+                }
+            });
+        }
+    });
+});
+
+
+        });
+    </script>
+
 
 @endsection

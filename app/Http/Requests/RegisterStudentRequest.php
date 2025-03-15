@@ -34,7 +34,9 @@ class RegisterStudentRequest extends FormRequest
             'admission_no' => 'required|string',
             'address' => 'required|max:200',
             'state_id' => 'required|integer',
-            'lga_id' => 'required|integer'
+            'lga_id' => 'required|integer',
+            'category' => 'required_if:class_category_id,4',
+            'gender' => 'required'
         ];
 
     }

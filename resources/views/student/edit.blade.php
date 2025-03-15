@@ -33,7 +33,7 @@ Student
                 <div class="card-body p-4" bis_skin_checked="1">
                     <div class="text-center" bis_skin_checked="1">
                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4" bis_skin_checked="1">
-                            <img src="assets/images/users/avatar-1.jpg" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+                            <img src="{{ asset('build/images/avatar.jpeg') }}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
                             <div class="avatar-xs p-0 rounded-circle profile-photo-edit" bis_skin_checked="1">
                                 <input id="profile-img-file-input" type="file" class="profile-img-file-input">
                                 <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
@@ -105,7 +105,7 @@ Student
                                     <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
                                         <div class="form-group">
                                             <label for="">Last Name <i class="text-danger">*</i></label>
-                                            <input type="text" class="form-control" name="last_name" id="last_name" value="{{ $student->last_name }}" placeholder="First name">
+                                            <input type="text" class="form-control" name="last_name" id="last_name" value="{{ $student->last_name }}" placeholder="Last name">
                                         </div>
                                         @error('last_name')
                                         <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
@@ -198,6 +198,35 @@ Student
                                         @enderror
                                     </div>
 
+                                    <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+                                        <div class="form-group">
+                                            <label for="">Select Gender  <i class="text-danger">*</i></label>
+                                            <select class="select2 form-select" name="gender" id="gender" >
+                                                <option value="">Select Guardian</option>
+                                                <option value="male" {{ 'male' == $student->gender ? 'selected' : '' }} > Male </option>
+                                                <option value="female" {{ 'female' == $student->gender ? 'selected' : '' }} > Female </option>
+                                            </select>
+                                        </div>
+                                        @error('gender')
+                                        <span class="text-danger" style="font-size: 12px">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    @if ($student->category > 0 || $student->class_category_id == 4)
+                                    <div class="col-lg-6 col-sm-6 mb-3" id="category" style="display:" >
+                                        <label for="">Category</label>
+                                        <select name="category" id="category" class="form-select">
+                                            <option value="">Select Category</option>
+                                            @foreach ($category as $row)
+                                            <option value="{{ $row->id }}" {{ $student->category == $row->id ? 'selected' : '' }}>{{ $row->name }} </option>
+                                            @endforeach
+                                        </select>
+                                        @error('category')
+                                        <span class="text-danger" style="font-size:12px">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    @endif
+
                                     {{-- <div class="col-lg-6 col-md-6 col-sm-12 mb-4" id="admission_div">
                                         <div class="form-group">
                                             <label for="">Admission Number <i class="text-danger">*</i></label>
@@ -252,7 +281,7 @@ Student
 
                                     <div class="col-lg-12" bis_skin_checked="1">
                                         <div class="hstack gap-2 justify-content-end" bis_skin_checked="1">
-                                            <button type="submit" class="btn btn-primary">Updates</button>
+                                            <button type="submit" class="btn btn-primary">Update</button>
                                             <a href="{{ route('student.index') }}" class="btn btn-soft-success">Cancel</a>
                                         </div>
                                     </div>
@@ -313,6 +342,16 @@ Student
         document.getElementById('status-switch').addEventListener('change', function () {
             const statusInput = document.getElementById('status');
             statusInput.value = this.checked ? '1' : '0';
+        });
+        $(document).ready(function(){
+            $('#class_category_id').change(function(){
+                var category = $('#class_category_id').val();
+                if(category == 4){
+                    $('#category').show();
+                }else{
+                    $('#category').hide();
+                }
+            });
         });
     </script>
 

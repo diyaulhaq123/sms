@@ -46,15 +46,20 @@ Students
         </div>
     </div>
     <div class="card p-4">
+        @can('add-student')
         <div class="card-header">
             <a class="btn btn-primary float-end" href="{{ route('student.create') }}" > <i class="ri-add-circle-line"></i> Add Students</a>
+            <div class="flex-shrink-0" bis_skin_checked="1">
+                <a href="{{ route('upload.student') }}" class="btn btn-danger"><i class="ri-upload-2-fill me-1 align-bottom"></i> Upload Student List</a>
+            </div>
         </div>
+        @endcan
         <div class="card-body">
             {{-- <div class="card-title fw-bold">Students</div> --}}
            <div class="row justify-content-center">
             <div class="col-12">
                 <div class="table table-responsive">
-                    <table class="table" id="myTable">
+                    <table class="display table dataTable" id="buttons-datatables">
                         <thead>
                             <tr>
                                 <th>SN</th>
@@ -103,7 +108,7 @@ Students
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-    <script src="{{ asset('build/assets/js/pages/datatables.init.js') }}"></script>
+    {{-- <script src="{{ asset('build/js/pages/datatables.init.js') }}"></script> --}}
     <script>
         // document.addEventListener('DOMContentLoaded', function () {
         //     let table = new DataTable('#myTable',);
@@ -111,43 +116,42 @@ Students
 
         $(document).ready(function(){
 
-            let table = $('#myTable').DataTable({
-                    ajax: {
-                        url: '/api/students',
-                        type: 'GET',
-                        data: function(d) {
-                            d.class_id = $('#class_id').val();
-                            d.wing = $('#wing').val();
-                            d.guardian_id = $('#guardian_id').val();
-                        }
-                    },
-                    processing: true,
-                    serverSide: true,
-                    searching : true,
-                    columns: [
-                        { data: 'id', name: 'id' },
-                        { data: 'first_name', name: 'first_name', searching: true  },
-                        { data: 'last_name', name: 'last_name', searching: true },
-                        { data: 'other_name', name: 'other_name', searching: true  },
-                        { data: 'class', name: 'class.name', searching: true  },
-                        { data: 'wing', name: 'wing', searching: true },
-                        { data: 'guardian', name: 'guardian', searching: true },
-                        { data: 'status', name: 'status', orderable: false, searching: false },
-                    ],
-                    rowCallback: function(row, data) {
-                        $(row).attr('onclick', `window.location='/student/${data.id}'`);
-                        $(row).css('cursor', 'pointer');
-                    }
-            });
+                    let table = $('#buttons-datatables').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel', 'print', 'pdf'
+                        ],
+                            ajax: {
+                                url: '/api/students',
+                                type: 'GET',
+                                data: function(d) {
+                                    d.class_id = $('#class_id').val();
+                                    d.wing = $('#wing').val();
+                                    d.guardian_id = $('#guardian_id').val();
+                                }
+                            },
+                            processing: true,
+                            serverSide: true,
+                            searching : true,
+                            columns: [
+                                { data: 'id', name: 'id' },
+                                { data: 'first_name', name: 'first_name', searching: true  },
+                                { data: 'last_name', name: 'last_name', searching: true },
+                                { data: 'other_name', name: 'other_name', searching: true  },
+                                { data: 'class', name: 'class.name', searching: true  },
+                                { data: 'wing', name: 'wing', searching: true },
+                                { data: 'guardian', name: 'guardian', searching: true },
+                                { data: 'status', name: 'status', orderable: false, searching: false },
+                            ],
+                            rowCallback: function(row, data) {
+                                $(row).attr('onclick', `window.location='/student/${data.id}'`);
+                                $(row).css('cursor', 'pointer');
+                            }
+                    });
 
-            $('#class_id, #wing, #guardian_id').on('change', function() {
-                table.ajax.reload();
-            });
-                // $('#download_report').on('click', function () {
-                //     $("#example").table2excel({
-                //         filename: "collection_reports.xls"
-                //     });
-                // });
+                    $('#class_id, #wing, #guardian_id').on('change', function() {
+                        table.ajax.reload();
+                    });
 
         });
 

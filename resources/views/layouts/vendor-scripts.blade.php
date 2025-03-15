@@ -7,6 +7,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if ($errors->any())
     @foreach ($errors->all() as $error)
         <script>
@@ -74,6 +75,28 @@
             }
         });
 
+        $('#class_id').change(function(){
+            var class_id = $(this).val();
+            if(class_id){
+                $.ajax({
+                    url: '/api-subjects/' + class_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data){
+                        $('#subject_id').empty();
+
+                        $('#subject_id').append('<option value="">Select Subject</option>');
+
+                        $.each(data, function(key, value){
+                            $('#subject_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#subject_id').empty();
+                $('#subject_id').append('<option value="">Select Subject</option>');
+            }
+        });
 
     </script>
 
